@@ -1,6 +1,6 @@
 const { createServer } = require('restify');
 const corsMiddleware = require('restify-cors-middleware');
-const { constructRoutes } = require('./utils/route.util');
+const { constructRoutes } = require('./utils/routes/route.util');
 const { applicationRoutes } = require('./routes');
 
 

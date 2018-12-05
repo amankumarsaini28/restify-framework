@@ -3,13 +3,14 @@ const { HttpMethods } = require('../constants/http-methods');
 /**
  * 
  * @param server -- instance of restify.createServer
+ * @returns -- function to map urls with controllers
  */
 function constructRoutes(server) {
     /**
      * @param applicationRoutes -- route definition for app
      * @param baseUrl -- baseUrl for all the routes
      */
-    return function (applicationRoutes, baseUrl) {
+    function mapUrlWithController(applicationRoutes, baseUrl) {
         if (!baseUrl) baseUrl = '';
         applicationRoutes.forEach(route => {
             const path = `${baseUrl}${route.path}`;
@@ -29,10 +30,11 @@ function constructRoutes(server) {
                 default: server.get(path, route.controller);
             }
             if (route.children && route.children.length > 0) {
-                constructRoutes(server)(route.children, path);
+                mapUrlWithController(route.children, path);
             }
         });
     }
+    return mapUrlWithController;
 }
 
 module.exports = {
